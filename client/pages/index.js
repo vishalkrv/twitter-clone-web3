@@ -9,11 +9,15 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import Head from "next/head";
+import { useState } from "react";
 import LeftSidebar from "../components/leftSidebar";
+import Login from "../components/login";
 import MainContent from "../components/mainContent";
 import RightSidebar from "../components/rightSidebar";
 
 export default function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
   return (
     <div>
       <Head>
@@ -23,9 +27,13 @@ export default function Home() {
       </Head>
 
       <Flex minH="100vh">
-        <LeftSidebar></LeftSidebar>
-        <MainContent></MainContent>
-        <RightSidebar />
+        {(isLoggedIn && (
+          <>
+            <LeftSidebar></LeftSidebar>
+            <MainContent></MainContent>
+            <RightSidebar />
+          </>
+        )) || <Login />}
       </Flex>
     </div>
   );

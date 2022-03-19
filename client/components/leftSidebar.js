@@ -6,6 +6,10 @@ import {
   Text,
   Button,
   Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { FaTwitter, FaHashtag } from "react-icons/fa";
@@ -58,7 +62,8 @@ const LeftSidebar = () => {
       pos="sticky"
       top={0}
       alignSelf="start"
-      px={70}
+      minW={300}
+      px={10}
       direction="column"
       justify={"space-between"}
       h="100vh"
@@ -95,18 +100,45 @@ const LeftSidebar = () => {
           p={"6"}
           fontWeight="bold"
         >
-          Tweet
+          Mint
         </Button>
       </Stack>
-      <Flex>
-        <UserAvatar></UserAvatar>
-        <Flex direction={"column"} pl={5}>
-          <Text fontWeight={"semibold"}>Vishal👨‍💻👨‍🍳🛌</Text>
-          <Text fontSize={"sm"} color={"gray"}>
-            @vishalkrv
-          </Text>
-        </Flex>
-      </Flex>
+      <Menu>
+        {({ isOpen }) => (
+          <>
+            <MenuButton
+              as={Button}
+              w="full"
+              py={8}
+              variant={"ghost"}
+              _focus={{
+                outline: "transparent",
+                borderRadius:30
+              }}
+              _hover={{
+                outline: "transparent",
+                borderRadius:30
+              }}
+            >
+              <Flex>
+                <UserAvatar></UserAvatar>
+                <Flex justifyContent={"space-between"} w="full">
+                  <Flex direction={"column"} pl={2}>
+                    <Text fontWeight={"semibold"}>Vishal👨‍💻👨‍🍳🛌</Text>
+                    <Text fontSize={"sm"} color={"gray"}>
+                      @vishalkrv
+                    </Text>
+                  </Flex>
+                  <Flex>...</Flex>
+                </Flex>
+              </Flex>
+            </MenuButton>
+            <MenuList>
+              <MenuItem>Logout</MenuItem>
+            </MenuList>
+          </>
+        )}
+      </Menu>
     </Flex>
   );
 };
