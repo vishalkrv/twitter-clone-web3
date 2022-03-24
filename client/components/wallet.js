@@ -170,13 +170,13 @@ export default function Wallet({ onSelect }) {
       value: "coinbase",
       label: "Coinbase",
       icon: SiCoinbase,
-      disabled: false,
+      disabled: true,
     },
     {
       value: "walletConnect",
       label: "Wallet Connect",
       icon: WalletConnect,
-      disabled: false,
+      disabled: true,
     },
   ];
 
@@ -195,6 +195,7 @@ export default function Wallet({ onSelect }) {
           borderWidth="1px"
           borderRadius="md"
           boxShadow="md"
+          opacity={props.disabled && 0.3 || 1}
           _checked={{
             bg: "blue.700",
             color: "white",

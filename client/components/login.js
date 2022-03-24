@@ -10,13 +10,27 @@ import {
   Link as ChakraLink,
 } from "@chakra-ui/react";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Wallet from "./wallet";
+import useMetamask from "../hooks/useMetamask";
+import { ethers } from "ethers";
 
 export default function Login() {
-  const onWalletSelect = (value) => {
-    console.log(value);
+  const { connect } = useMetamask();
+
+  const onWalletSelect = async (value) => {
+    switch (value) {
+      case "metamask":
+        try {
+          await connect(ethers.providers.Web3Provider, "any");
+        } catch (error) {
+          console.log(error);
+        }
+        break;
+    }
   };
+
   return (
     <Box position={"relative"}>
       <Blur

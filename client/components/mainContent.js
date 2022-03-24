@@ -16,21 +16,21 @@ import UserAvatar from "./userAvatar";
 
 const TweetList = [
   {
-    avatar: "https://pbs.twimg.com/profile_images/1235992718171467776/PaX2Bz1S_400x400.jpg",
+    avatar:
+      "https://pbs.twimg.com/profile_images/1235992718171467776/PaX2Bz1S_400x400.jpg",
     name: "Netflix India",
     address: "NetflixIndia",
-    description:
-      `Ryan Reynolds time traveled just to punch Mark Ruffalo.`,
+    description: `Ryan Reynolds time traveled just to punch Mark Ruffalo.`,
     reTweetCount: 123,
     commentsCount: 23,
     likesCount: 3,
   },
   {
-    avatar: "https://pbs.twimg.com/profile_images/1278259160644227073/MfCyF7CG_400x400.jpg",
+    avatar:
+      "https://pbs.twimg.com/profile_images/1278259160644227073/MfCyF7CG_400x400.jpg",
     name: "CNN",
     address: "CNN",
-    description:
-      `NBC recently announced a forthcoming two-hour TV event, titled "An Audience with Adele."`,
+    description: `NBC recently announced a forthcoming two-hour TV event, titled "An Audience with Adele."`,
     reTweetCount: 123,
     commentsCount: 23,
     likesCount: 3,
@@ -47,7 +47,13 @@ const MainContent = () => {
       direction={"column"}
       py={3}
     >
-      <Flex direction={"column"} w="full" px={5} pb={5} borderBottom={"1px solid gray"}>
+      <Flex
+        direction={"column"}
+        w="full"
+        px={5}
+        pb={5}
+        borderBottom={"1px solid gray"}
+      >
         <Heading size="md">Latest Tweets</Heading>
         <Flex mt={5} w="full">
           <UserAvatar></UserAvatar>
@@ -93,7 +99,7 @@ const MainContent = () => {
         </Flex>
       </Flex>
       {TweetList.map((tweet, index) => (
-        <Tweet {...tweet}></Tweet>
+        <Tweet key={index} {...tweet}></Tweet>
       ))}
     </Flex>
   );

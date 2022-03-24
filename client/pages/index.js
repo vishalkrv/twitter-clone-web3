@@ -9,15 +9,21 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LeftSidebar from "../components/leftSidebar";
 import Login from "../components/login";
 import MainContent from "../components/mainContent";
 import RightSidebar from "../components/rightSidebar";
+import useMetamask from "../hooks/useMetamask";
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+  const { metaState } = useMetamask();
+
+  useEffect(() => {
+    console.log(metaState);
+  }, [metaState]);
+
   return (
     <div>
       <Head>
@@ -27,7 +33,7 @@ export default function Home() {
       </Head>
 
       <Flex minH="100vh">
-        {(isLoggedIn && (
+        {(metaState.isConnected && metaState.isAvailable && (
           <>
             <LeftSidebar></LeftSidebar>
             <MainContent></MainContent>

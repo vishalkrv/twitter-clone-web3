@@ -20,6 +20,7 @@ import { CgNotes, CgMoreO } from "react-icons/cg";
 import { RiHome7Fill } from "react-icons/ri";
 import { IconSize, TwitterBlue } from "../utils/constant";
 import UserAvatar from "./userAvatar";
+import useMetamask from "../hooks/useMetamask";
 
 const menuList = [
   {
@@ -57,6 +58,7 @@ const menuList = [
 ];
 
 const LeftSidebar = () => {
+  const { deactivate } = useMetamask();
   return (
     <Flex
       pos="sticky"
@@ -113,11 +115,11 @@ const LeftSidebar = () => {
               variant={"ghost"}
               _focus={{
                 outline: "transparent",
-                borderRadius:30
+                borderRadius: 30,
               }}
               _hover={{
                 outline: "transparent",
-                borderRadius:30
+                borderRadius: 30,
               }}
             >
               <Flex>
@@ -134,7 +136,7 @@ const LeftSidebar = () => {
               </Flex>
             </MenuButton>
             <MenuList>
-              <MenuItem>Logout</MenuItem>
+              <MenuItem onClick={deactivate}>Logout</MenuItem>
             </MenuList>
           </>
         )}

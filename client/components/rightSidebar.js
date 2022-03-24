@@ -6,7 +6,7 @@ import {
   Heading,
   useColorModeValue,
   Avatar,
-  Button
+  Button,
 } from "@chakra-ui/react";
 import { TwitterBlue } from "../utils/constant";
 
@@ -75,7 +75,7 @@ const RightSidebar = () => {
             What's Happening
           </Heading>
           {newsList.map((news, index) => (
-            <Flex direction={"column"} mt={5}>
+            <Flex direction={"column"} key={index} mt={5}>
               <Flex align={"center"} justify="space-between">
                 <Text fontSize={"xs"} color="gray.200">
                   {news.title}
@@ -110,7 +110,7 @@ const RightSidebar = () => {
             Who to follow
           </Heading>
           {followList.map((user, index) => (
-            <Flex justify={'space-between'} mt={5}>
+            <Flex justify={"space-between"} mt={5} key={index}>
               <Flex align={"center"}>
                 <Avatar src={user.avatar}></Avatar>
                 <Flex direction={"column"} ml={5}>
@@ -120,7 +120,9 @@ const RightSidebar = () => {
                   </Flex>
                 </Flex>
               </Flex>
-              <Button bg={'gray'} borderRadius={20}>Follow</Button>
+              <Button bg={"gray"} borderRadius={20}>
+                Follow
+              </Button>
             </Flex>
           ))}
         </Flex>
