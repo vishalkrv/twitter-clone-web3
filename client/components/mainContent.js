@@ -1,18 +1,11 @@
-import {
-  Avatar,
-  Button,
-  Flex,
-  Heading,
-  IconButton,
-  Input,
-  Box,
-  Textarea,
-  Text,
-} from "@chakra-ui/react";
-import { TwitterBlue } from "../utils/constant";
-import { FaImage } from "react-icons/fa";
-import Tweet from "./tweet";
-import UserAvatar from "./userAvatar";
+import { Flex, Heading } from "@chakra-ui/react";
+
+import TweetFeed from "./tweetFeed";
+
+import { ethers } from "ethers";
+import abi from "../../smart-contract/artifacts/contracts/Tweets.sol/Tweets.json";
+import { useEffect, useState } from "react";
+import TweetBox from "./tweetBox";
 
 const TweetList = [
   {
@@ -37,7 +30,64 @@ const TweetList = [
   },
 ];
 
-const MainContent = () => {
+export default function MainContent() {
+  const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_TWITTER_ADDRESS;
+  const contractABI = abi.abi;
+
+  const [tweetFeed, setTweetFeed] = useState([]);
+
+  /*
+   * Create a method that gets all waves from your contract
+   */
+  const getAllTweets = async () => {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const tweetsContract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+
+        /*
+         * Call the getAllTweets method from your Smart Contract
+         */
+        const tweets = await tweetsContract.getAllTweets();
+
+        /*
+         * We only need address, timestamp, and message in our UI so let's
+         * pick those out
+         */
+        let tweetsCleaned = [];
+        tweets.forEach((tweet) => {
+          // console.log(tweet);
+
+          tweetsCleaned.push({
+            address: tweet.user,
+            timestamp: new Date(tweet.timestamp * 1000),
+            message: tweet.message,
+          });
+        });
+        tweetsCleaned.sort((x, y) => y.timestamp - x.timestamp);
+        setTweetFeed(tweetsCleaned);
+        // console.log(tweetsCleaned);
+        /*
+         * Store our data in React State
+         */
+        // setAllWaves(wavesCleaned);
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllTweets();
+  }, []);
   return (
     <Flex
       w="full"
@@ -55,54 +105,11 @@ const MainContent = () => {
         borderBottom={"1px solid gray"}
       >
         <Heading size="md">Latest Tweets</Heading>
-        <Flex mt={5} w="full">
-          <UserAvatar></UserAvatar>
-          <Flex direction={"column"} ml={5} w="full">
-            <Textarea
-              placeholder="What's happening?"
-              fontSize={20}
-              fontWeight="semibold"
-              p={0}
-              variant="unstyled"
-              overflow={"hidden"}
-              resize={"none"}
-            ></Textarea>
-            <Flex justify={"space-between"}>
-              <Box d="flex">
-                <IconButton
-                  variant={"ghost"}
-                  isRound
-                  colorScheme={"blue"}
-                  fontSize="20px"
-                  icon={<FaImage></FaImage>}
-                ></IconButton>
-                <IconButton
-                  variant={"ghost"}
-                  isRound
-                  colorScheme={"blue"}
-                  fontSize="20px"
-                  icon={<FaImage></FaImage>}
-                ></IconButton>
-                <IconButton
-                  variant={"ghost"}
-                  isRound
-                  colorScheme={"blue"}
-                  fontSize="20px"
-                  icon={<FaImage></FaImage>}
-                ></IconButton>
-              </Box>
-              <Button borderRadius={30} bg={TwitterBlue}>
-                Tweet
-              </Button>
-            </Flex>
-          </Flex>
-        </Flex>
+        <TweetBox done={getAllTweets}></TweetBox>
       </Flex>
-      {TweetList.map((tweet, index) => (
-        <Tweet key={index} {...tweet}></Tweet>
+      {tweetFeed.map((tweet, index) => (
+        <TweetFeed key={index} {...tweet}></TweetFeed>
       ))}
     </Flex>
   );
-};
-
-export default MainContent;
+}

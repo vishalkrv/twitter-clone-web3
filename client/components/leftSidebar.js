@@ -10,6 +10,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  useDisclosure,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { FaTwitter, FaHashtag } from "react-icons/fa";
@@ -21,6 +22,8 @@ import { RiHome7Fill } from "react-icons/ri";
 import { IconSize, TwitterBlue } from "../utils/constant";
 import UserAvatar from "./userAvatar";
 import useMetamask from "../hooks/useMetamask";
+import shorten from "../utils/shorten";
+import ChangeProfilePic from "./changeProfilePic";
 
 const menuList = [
   {
@@ -58,44 +61,47 @@ const menuList = [
 ];
 
 const LeftSidebar = () => {
-  const { deactivate } = useMetamask();
+  const { metaState, deactivate } = useMetamask();
+  const { isOpen: isModalOpen, onOpen, onClose } = useDisclosure();
+
   return (
-    <Flex
-      pos="sticky"
-      top={0}
-      alignSelf="start"
-      minW={300}
-      px={10}
-      direction="column"
-      justify={"space-between"}
-      h="100vh"
-      pb={8}
-    >
-      <Stack mt={2}>
-        <NextLink href="/" passHref>
-          <Link>
-            <Flex>
-              <Icon as={FaTwitter} fontSize={IconSize} />
-            </Flex>
-          </Link>
-        </NextLink>
-        {menuList.map((menu, index) => (
-          <NextLink href="/" passHref key={index}>
-            <Link _hover={{ textDecoration: "none" }}>
-              <Flex
-                _hover={{ bg: "gray.300", borderRadius: 30 }}
-                align={"center"}
-                fontWeight={"semibold"}
-                py={2}
-                px={2}
-              >
-                <Icon fontSize={IconSize} as={menu.icon} mr={5} />
-                <Text fontSize={"xl"}>{menu.label}</Text>
+    <>
+      <Flex
+        pos="sticky"
+        top={0}
+        alignSelf="start"
+        minW={300}
+        px={10}
+        direction="column"
+        justify={"space-between"}
+        h="100vh"
+        pb={8}
+      >
+        <Stack mt={2}>
+          <NextLink href="/" passHref>
+            <Link>
+              <Flex>
+                <Icon as={FaTwitter} fontSize={IconSize} />
               </Flex>
             </Link>
           </NextLink>
-        ))}
-        <Button
+          {menuList.map((menu, index) => (
+            <NextLink href="/" passHref key={index}>
+              <Link _hover={{ textDecoration: "none" }}>
+                <Flex
+                  _hover={{ bg: "gray.300", borderRadius: 30 }}
+                  align={"center"}
+                  fontWeight={"semibold"}
+                  py={2}
+                  px={2}
+                >
+                  <Icon fontSize={IconSize} as={menu.icon} mr={5} />
+                  <Text fontSize={"xl"}>{menu.label}</Text>
+                </Flex>
+              </Link>
+            </NextLink>
+          ))}
+          {/* <Button
           bg={TwitterBlue}
           color={"white"}
           borderRadius={30}
@@ -103,45 +109,53 @@ const LeftSidebar = () => {
           fontWeight="bold"
         >
           Mint
-        </Button>
-      </Stack>
-      <Menu>
-        {({ isOpen }) => (
-          <>
-            <MenuButton
-              as={Button}
-              w="full"
-              py={8}
-              variant={"ghost"}
-              _focus={{
-                outline: "transparent",
-                borderRadius: 30,
-              }}
-              _hover={{
-                outline: "transparent",
-                borderRadius: 30,
-              }}
-            >
-              <Flex>
-                <UserAvatar></UserAvatar>
-                <Flex justifyContent={"space-between"} w="full">
-                  <Flex direction={"column"} pl={2}>
-                    <Text fontWeight={"semibold"}>Vishal👨‍💻👨‍🍳🛌</Text>
-                    <Text fontSize={"sm"} color={"gray"}>
-                      @vishalkrv
-                    </Text>
+        </Button> */}
+        </Stack>
+        <Menu>
+          {({ isOpen }) => (
+            <>
+              <MenuButton
+                as={Button}
+                w="full"
+                py={8}
+                variant={"ghost"}
+                _focus={{
+                  outline: "transparent",
+                  borderRadius: 30,
+                }}
+                _hover={{
+                  outline: "transparent",
+                  borderRadius: 30,
+                }}
+              >
+                <Flex>
+                  <UserAvatar></UserAvatar>
+                  <Flex justifyContent={"space-between"} w="full">
+                    <Flex direction={"column"} pl={2} justify="center">
+                      <Text fontWeight={"semibold"}>
+                        @{shorten(metaState.account[0])}
+                      </Text>
+                      {/* <Text fontSize={"sm"} color={"gray"}>
+                      @{shorten(metaState.account[0])}
+                    </Text> */}
+                    </Flex>
+                    {/* <Flex>...</Flex> */}
                   </Flex>
-                  <Flex>...</Flex>
                 </Flex>
-              </Flex>
-            </MenuButton>
-            <MenuList>
-              <MenuItem onClick={deactivate}>Logout</MenuItem>
-            </MenuList>
-          </>
-        )}
-      </Menu>
-    </Flex>
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={onOpen}>Change Profile Picture</MenuItem>
+                <MenuItem onClick={deactivate}>Logout</MenuItem>
+              </MenuList>
+            </>
+          )}
+        </Menu>
+      </Flex>
+      <ChangeProfilePic
+        isOpen={isModalOpen}
+        onClose={onClose}
+      ></ChangeProfilePic>
+    </>
   );
 };
 

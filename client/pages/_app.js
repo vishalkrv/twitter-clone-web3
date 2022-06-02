@@ -4,6 +4,7 @@ import theme from "../styles/theme";
 import { MetamaskStateProvider } from "../providers/metmask";
 
 function MyApp({ Component, pageProps }) {
+
   return (
     <ChakraProvider theme={theme}>
       <MetamaskStateProvider>

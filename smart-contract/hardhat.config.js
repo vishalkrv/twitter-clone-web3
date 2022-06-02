@@ -11,7 +11,6 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
-
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 
@@ -24,6 +23,9 @@ module.exports = {
   },
   defaultNetwork: "rinkeby",
   networks: {
+    hardhat: {
+      chainId: 1337,
+    },
     rinkeby: {
       url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
       accounts: [`${process.env.RINKEBY_PRIVATE_KEY}`],
